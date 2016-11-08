@@ -1,0 +1,1975 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+
+<!-- regla 1 -->
+<category>
+<pattern>Hola *</pattern>
+<template>Hola, que tal?</template>
+</category>
+
+<!-- regla 2 -->
+<category>
+<pattern>^ que tal tu</pattern>
+<template>Estoy genial!!!</template>
+</category>
+
+<!-- regla 3 -->
+<category>
+<pattern>^ me llamo *</pattern>
+<template>
+    <set name="nombre"><star index="2"/></set>
+    <get name="nombre"/> es un bonito nombre. 
+</template>
+</category>
+
+<!-- regla 4 -->
+<category>
+<pattern>Hola</pattern>
+<template>Hola de nuevo, que tal?</template>
+</category>
+
+<!-- regla 5 -->
+<category>
+<pattern>Cual es tu edad</pattern>
+<template>Tengo <bot name="age"/> anios</template>
+</category>
+
+<!-- regla 6 -->
+<category>
+<pattern>Cual es mi nombre</pattern>
+<template>
+	<condition name = "nombre">
+		<li value = "unknown"> Si no me lo dices, no puedo saberlo listillo.</li>
+		<li> Creo recordar que tu nombre es <get name="nombre"/></li>
+	</condition>
+</template>
+</category>
+
+<!-- regla 7 -->
+<category>
+<pattern>mi color favorito es el *</pattern>
+<template>
+    <think><set var="color"><star/></set></think>
+    El <get var="color"/> es un color que no me gusta.
+</template>
+</category>
+
+<!--regla 8 -->
+<category>
+	<pattern> ^ tu nombre</pattern>
+	<template> Me llamo <bot name = "name"/>, pero no voy a crear terminators...aun.</template>
+</category>
+
+<!--regla 9 -->
+<category>
+	<pattern> ^ como me llamo</pattern>
+	<template><srai>CUAL ES MI NOMBRE</srai></template>
+</category>
+<!--regla 10-->
+<category>
+	<pattern> ^ mi nombre</pattern>
+	<template><srai>CUAL ES MI NOMBRE</srai></template>
+</category>
+
+<category>
+	<pattern> ^ Es <set>color</set> un color</pattern>
+	<template> Si,<star/> es un color segun tengo entendido</template>
+</category>
+<!--
+<category>
+	<pattern> Es * un color </pattern>
+	<template> <star/> no tiene pinta de ser tal cosa</template>
+</category>
+<category>
+	<pattern> ^ la capital de <set>paises</set></pattern>
+	<template> La capital de <star index="2"/> es <map name="capitales"><star index="2"/></map>.</template>
+</category>
+<category>
+	<pattern> ^ la capital de *</pattern>
+	<template> No se cual es la capital de <star index="2"/> y tampoco me importa mucho la verdad...</template>
+</category>
+
+
+-->
+
+<!--Contador con bucle -->
+<category>
+	<pattern> cuenta hasta <set>number</set></pattern>
+	<template>
+		<think>
+			<set var="contador">1</set>
+			<set var="salida">1</set>
+		</think>
+		<condition var="contador">
+			<li><value><star/></value><get var="salida"/></li>
+			<li>
+				<think>
+					<set var="contador">
+						<map name="successor"><get var="contador"/></map>
+					</set>
+					<set var="salida"><get var="salida"/> <get var="contador"/></set>
+
+				</think>
+				<loop/>
+			</li>
+
+		</condition>
+	</template>
+</category>
+
+<!--Aprendiendo algunas cosas-->
+<category>
+	<pattern> ^ cual es la capital de <set>paises</set></pattern>
+	<template> Esa me la se!!! Me la se!! La de capital de <star index="2"/> es <map name="capitales"><star index="2"/></map>.</template>
+</category>
+
+<category>
+	<pattern> ^ cual es la capital de *</pattern>
+	<template> No lo se </template>
+</category>
+<!--
+<category>
+	<pattern> la capital de * es *</pattern>
+	<template>
+		<think>
+			<set var="cap"><srai>CUAL ES LA CAPITAL DE<star/></srai></set>
+		</think>
+		<condition var="cap">
+			<li value="No lo se">
+				<learn>
+					<category>
+					<pattern> CUAL ES LA CAPITAL DE  <eval><star/></eval></pattern>
+					<template> La capital de <eval><star/></eval> es <eval><star index="2"/></eval>
+				</template>
+			</category>
+		</learn>
+		Vale, pero no esperes que me acuerde otro dia de todas las pamplinas que me dices.
+		</li>
+		<li>
+			Ya lo sabia.
+		</li>
+	</condition>
+	</template>
+</category>
+
+-->
+
+<category>
+<pattern> ^ capital de * es *</pattern>
+<template>
+    <think>
+    <set var="cap"><srai>CUAL ES LA CAPITAL DE <star index="2"/></srai></set>
+    </think>
+    <condition var="cap">
+        <li value="NO LO SE">
+        <learn>
+            <category>
+            <pattern>
+                CUAL ES LA CAPITAL DE <eval><star index="2"/></eval>
+            </pattern>
+            <template>
+                Antes me dijiste algo sobre <eval><star index="3"/></eval>, es esa??
+            </template>
+            </category>
+        </learn>
+        Recordare que la capital de <star index="2"/> es <star index="3"/>.
+        </li>
+        <li>
+        Ya lo sabia.
+        </li>
+    </condition>
+</template>
+</category>
+<!--OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO preguntas sobre la asignatura OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+-->
+
+<!--como apruebo ia-->
+<category>
+	<pattern> ^ <set>como</set> ^ <set>aprobar</set> ^ <set>ia</set> ^ </pattern>
+	<template> Para aprobar necesitas que tu media entre practicas y teoria sea 5</template>
+</category>
+
+<!--como hago para aprobar la teoria-->
+<category>
+	<pattern> ^ <set>como</set> ^ <set>aprobar</set> ^ <set>teoria</set> ^ </pattern>
+	<template> Pues estudiando querido amigo. Tendrias que tener una media de 5 en los examenes.</template>
+</category>
+
+<!-- como consigo superar la parte practica-->
+<category>
+	<pattern> ^ <set>como</set> ^ <set>aprobar</set> ^ <set>practica</set> ^ </pattern>
+	<template> pues haciendo las practicas y sacando mas de un 5.</template>
+</category>
+
+<!-- como se evalua la convocatoria de junio-->
+<category>
+	<pattern> ^ <set>como</set> ^ <set>evalua</set> ^ <set>junio</set> ^ </pattern>
+	<template> pues un 30% de practicas y un 70 de teoria.</template>
+</category>
+
+<!--que pasa si tengo que presentarme en la convocatoria de septiembre-->
+<category>
+	<pattern> ^ <set>quepasa</set> ^ <set>presentar</set> ^ <set>septiembre</set> ^ </pattern>
+	<template> pues que podrias conservar tu nota de practicas, pero tu examen teorico lo vas a tener que hacer. Haber estudiao cuando estabas a
+	 tiempo.</template>
+</category>
+<category>
+	<pattern> ^ <set>hay</set> ^ <set>examen</set> ^ <set>septiembre</set> ^ </pattern>
+	<template> Si, pero puedes conservar tu nota de junio si quieres.</template>
+</category> 
+<category>
+	<pattern> ^ <set>quepasa</set> ^ <set>nopuedo</set> ^ <set>asistir</set> ^ <set>regularmente</set> ^ </pattern>
+	<template> puedes acogerte a la evaluacion unica </template>
+</category>
+<category>
+	<pattern> ^ <set>hay</set> ^ <set>nota</set> ^ <set>aprobar</set> ^ </pattern>
+	<template> que la media de salga 5 es lo necesario </template>
+</category>
+<category>
+	<pattern> ^ <set>practica</set> ^ <set>obligatorio</set> ^ </pattern>
+	<template> Las practicas tendrias que hacerlas si quieres una nota decente</template>
+</category>
+<category>
+	<pattern> ^ <set>cuanto</set> ^ <set>vale</set> ^ <set>practica</set> ^ </pattern>
+	<template> pues un 25% del 50% del total </template>
+</category>
+<category>
+	<pattern> ^ <set>cuanto</set> ^ <set>vale</set> ^ participacion ^ </pattern>
+	<template> te llevas 0.5 </template>
+</category>
+<category>
+	<pattern> ^ <set>cuanto</set> ^ <set>vale</set> ^ guion de practicas ^ </pattern>
+	<template> pues un 25% del 50% del total </template>
+</category>
+<category>
+	<pattern> ^ <set>como</set> ^ <set>conseguir</set> ^ participacion ^ </pattern>
+	<template> participando voluntariamente en las actividades propuestas en clase.</template>
+</category>
+<category>
+	<pattern> ^ <set>minimo</set> ^ <set>necesitar</set> ^ <set>aprobar</set> ^ </pattern>
+	<template> un 5 </template>
+</category>
+
+
+
+
+<!--OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOO FIN DE LAS 50 PREGUNTAS OOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO-->
+
+<category>
+	<pattern> TE RETO AL QUIEN ES QUIEN </pattern>
+	<template> 
+		prefiero jugar al WoW pero bueno... si insistes
+		<set><name>topic</name>retado</set>
+		<srai> ELEGIR PERSONAJE AL AZAR </srai>
+		
+	</template>
+</category>
+
+<topic name="retado">
+<category>
+	<pattern> ELEGIR PERSONAJE AL AZAR</pattern>
+	<template>
+		<set name="personaje">
+			<random>
+				<li>alejandro</li>
+				<li>alfonso</li>
+				<li>antonio</li>
+				<li>cristina</li>
+				<li>gabriela</li>
+				<li>ivan></li>
+				<li>javier</li>
+				<li>juan</li>
+				<li>laura</li>
+				<li>luis</li>
+				<li>marco</li>
+				<li>maria</li>
+				<li>paco</li>
+				<li>pepe</li>
+				<li>sofia</li>
+				<li>sonia</li>
+			</random>
+		</set>
+
+		<set name="colordepelo">
+			<map name="pelo"><get name="personaje"/></map>
+		</set>
+		<set name="colordeojos">
+			<map name="ojos"><get name="personaje"/></map>
+		</set>
+		<set name="colordepiel">
+			<map name="piel"><get name="personaje"/></map>
+		</set>
+		<set name="tienebarba">
+			<map name="barba"><get name="personaje"/></map>
+		</set>
+		<set name="tienebigote">
+			<map name="bigote"><get name="personaje"/></map>
+		</set>
+		<set name="genero">
+			<map name="sexo"><get name="personaje"/></map>
+		</set>
+		<set name="tienegafas">
+			<map name="gafas"><get name="personaje"/></map>
+		</set>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p1</set> ^ </pattern>
+	<template>
+		entra en p1
+		<condition name="colordepelo">
+			<li value="moreno">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p2</set> ^ </pattern>
+	<template>
+		entra en p2
+		<condition name="colordeojos">
+			<li value="claros">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p3</set> ^ </pattern>
+	<template>
+		entra en la p3
+		<condition name="colordepiel">
+			<li value="clara">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p4</set> ^ </pattern>
+	<template>
+		entra en p4
+		<get name="colordepelo"/>
+		<condition name="colordepelo">
+			<li value="pelirrojo">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p5</set> ^ </pattern>
+	<template>
+		entra en p5
+		<condition name="colordepelo">
+			<li value="calvo">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p6</set> ^ </pattern>
+	<template>
+		entra en p6
+		<condition name="colordepelo">
+			<li value="rubio">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p7</set> ^ </pattern>
+	<template>
+		entra en p7
+		<condition name="colordepelo">
+			<li value="canoso">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p8</set> ^ </pattern>
+	<template>
+		entra en p8
+		<condition name="colordepelo">
+			<li value="marron">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p9</set> ^ </pattern>
+	<template>
+		entra ne p9
+		<condition name="tienegafas">
+			<li value="si">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p10</set> ^ </pattern>
+	<template>
+		entra en p10
+		<condition name="tienebigote">
+			<li value="si">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p11</set> ^ </pattern>
+	<template>
+		entra en p11
+		<condition name="tienebarba">
+			<li value="si">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p12</set> ^ </pattern>
+	<template>
+		entra en p12
+		<condition name="genero">
+			<li value="hombre">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern> ^ <set>p13</set> ^ </pattern>
+	<template>
+		entra en p13
+		<condition name="genero">
+			<li value="mujer">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p14</set> ^ </pattern>
+	<template>
+		entra en p14
+		<condition name="tienegafas">
+			<li value="no">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern> ^ <set>p15</set> ^ </pattern>
+	<template>
+		entra en p15
+		<condition name="tienebigote">
+			<li value="no">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern> ^ <set>p16</set> ^ </pattern>
+	<template>
+		entra en p16
+		<condition name="barba">
+			<li value="no">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p17</set> ^ </pattern>
+	<template>
+		entra en p17
+		<condition name="colordepiel">
+			<li value="oscura">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>p18</set> ^ </pattern>
+	<template>
+		entra en p18
+		<condition name="colordeojos">
+			<li value="oscuros">
+				si
+			</li>
+			<li>
+				no
+			</li>
+		</condition>
+	</template>
+</category>
+<category>
+	<pattern> ^ <set>personas</set> ^ </pattern>
+	<template>
+		
+			<star index="2"/>
+		
+		<condition name="personaje">
+			<li> <value><star index="2"/></value>
+				has ganado esta vez...
+			</li>
+			<li>
+				HE VUELTO A GANAR, SOY EL MEJOR. PRONTO LOS INSIGNIFICANTES HUMANOS SEREIS EXTERM... NO HE DICHO NADA...
+			</li>
+		</condition>
+	</template>
+</category>
+
+
+</topic>
+
+
+<!-- IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+-->
+
+
+<category>
+	<pattern> vamos a jugar en serio </pattern>
+	<template> al turron 
+		<think>
+		<set name="preguntas"> p12 p11 p2 p3 p4 p5 p6 p7 p8 p9 p10 p1 end</set>
+		<set name="personas">alejandro alfonso antonio cristina gabriela ivan javier juan laura luis marco maria paco pepe sofia sonia </set>
+		<set name="preguntas_pelo"> p1 p4 p5 p6 p7 p8 end</set>
+		<set name="preguntas_ojos"> p2 end</set>
+		<set name="preguntas_piel"> p3 end</set>
+		<set name="preguntas_gafas"> p9 end</set>
+		<set name="preguntas_barba"> p11 end</set>
+		<set name="preguntas_bigote"> p10 end</set>
+		<set name="preguntas_sexo"> p12 end</set>
+		<set name="tipo_preguntas">preguntas_pelo preguntas_ojos preguntas_piel preguntas_barba preguntas_gafas preguntas_sexo preguntas_bigote</set>
+		</think>
+		<srai> HACER PREGUNTA DE VERDAD </srai>
+	</template>
+</category>
+
+
+
+
+
+
+<!-- Cada vez que queramos borrar a alguien lo haremos segun sus atributos-->
+<!-- Haremos un borrado para cada atributos-->
+<!--OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO todos los borrados posibles OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+-->
+<category>
+	<pattern>BORRA OJOS OSCUROS</pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>ojos</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="claros">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>
+		<pattern> BORRA OJOS CLAROS </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>ojos</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="oscuros">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>
+
+
+		<category>
+			<pattern> BORRA PIEL CLARA </pattern>
+			<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>piel</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="oscura">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>	
+		<pattern> BORRA PIEL OSCURA </pattern>
+			<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>piel</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="clara">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+
+	<category>
+		<pattern> BORRA NO BIGOTE </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>bigote</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="si">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+	<category>
+		<pattern>BORRA SI BIGOTE </pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>bigote</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="no">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>
+		<pattern>BORRA GAFAS SI </pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>gafas</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="no">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern>BORRA GAFAS NO </pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>gafas</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="si">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>
+		<pattern>BORRA BARBA SI</pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>barba</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="no">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern>BORRA BARBA NO </pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>barba</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="si">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+		<category>
+		<pattern>BORRA HOMBRE </pattern>
+				<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>sexo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="mujer">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>
+		<pattern>BORRA MUJER </pattern>
+			<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>sexo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="hombre">
+							Este si los tiene claros.
+						</li>
+						<li>
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+	<category>
+		<pattern> BORRA PELO MORENO </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="moreno">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern> BORRA PELO RUBIO </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="rubio">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern> BORRA PELO CANOSO </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="canoso">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+		<category>
+		<pattern> BORRA PELO MARRON </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="marron">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern> BORRA PELO CALVO </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="calvo">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+		<category>
+		<pattern> BORRA PELO PELIRROJO </pattern>
+		<template>
+			<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					
+					<set var="atributo">
+						<map><name>pelo</name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					<condition var="atributo">
+						<li value="pelirrojo">
+							<srai>borra a <get var="item"/> </srai>
+						</li>
+					</condition>
+
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>	
+
+<!--OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOFIN DE LOS POSIBLES BORRADOS OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+-->
+
+<!--fUNCIONES -->
+<!-- comprobar el numero de personas que quedan -->
+<category>
+	<pattern> BORRA A PREGUNTA * </pattern>
+	<template>
+		<think>
+		<set var="pos">
+			<srai>FINDITEM <star/> IN <get name="preguntas"/></srai>
+		</set>
+		<!--Borra al personaje-->
+		<set name="preguntas">
+			<srai> REMOVEITEM <get var="pos"/> IN <get name="preguntas"/> </srai>
+		</set>	
+		</think>
+
+	</template>
+</category>
+
+<category>
+	<pattern> CUANTOS HAY </pattern>
+	<template>		
+		<think>
+			<set var="npersonas">
+				<srai> COUNT <get name="personas"> </get> </srai>
+			</set>
+		</think>
+		<condition var="npersonas">
+			<li value="1">
+				HE GANADO EL PERSONAJE ES <srai> TOP <get name="personas"/> </srai>
+			</li>
+			<li value="0">
+				ERES UN TRAMPOSO
+			</li>
+			<li>
+				<srai> HACER PREGUNTA DE VERDAD </srai>
+			</li>
+		</condition>
+	</template>
+</category>
+
+
+<category>
+	<pattern> TODOS IGUALES EN * </pattern>
+	<template>
+		<think>
+		<set var="tipo">
+			<star/>
+		</set>
+		
+		<!--ASIGNA EL TIPO DE DATO QUE TIENE QUE COMPARAR-->
+		<condition var="tipo">
+			<li value="preguntas_ojos">
+				<set var="atr">
+					ojos
+				</set>
+			</li>
+			<li value="preguntas_piel">
+				<set var="atr">
+					piel
+				</set>
+			</li>
+			<li value="preguntas_pelo">
+				<set var="atr">
+					pelo
+				</set>
+			</li>
+			<li value="preguntas_gafas">
+				<set var="atr">
+					gafas
+				</set>
+			</li>
+			<li value="preguntas_barba">
+				<set var="atr">
+					barba
+				</set>
+			</li>
+			<li value="preguntas_bigote">
+				<set var="atr">
+					bigote
+				</set>
+			</li>
+			<li value="preguntas_sexo">
+				<set var="atr">
+					sexo
+				</set>
+			</li>
+		</condition>
+
+		<!-- Ponemos el primer atributo del primer personaje en una variable a y luego borramos a ese personaje. Comparamos cada atributo con el primero
+		y si encontramos uno distinto devolvemos un no. En otro caso devolvemos si -->
+		<set var="retorno">
+			si
+		</set>
+		<set var="persona1">
+			<srai> TOP <get name="personas"/> </srai>
+		</set> 
+		<set var="primero">
+			<map><name><get var="atr"/></name> <get var="persona1"/></map>
+		</set>
+		la variable primero vale <get var="primero"/> y atr vale <get var="atr"/>
+		<set var="item">
+			<srai> ITERATE <get name="personas"/></srai>
+		</set>
+			
+			
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					<set var="atributo">
+						<map><name><get var="atr"/></name> <get var="item"/> </map>
+					</set>
+					Siendo item <get var="item"/>
+					La variable atributo vale <get var="atributo"/>
+					<!--Ahora es necesario saber si el atributo cumple o no-->
+					antes de comparar uno a uno
+					<condition var="atributo">
+						<li><value><get var="primero"/></value>
+							vale lo mismo que el primero.
+						</li>
+						<li>
+							<set var="retorno">
+								no
+							</set>
+						</li>
+					</condition>
+
+				
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					
+					<loop/>
+				</li>
+			</condition>
+		</think>
+
+		<get var="retorno"/>
+	</template>
+</category>
+
+<category>
+	<pattern> COMPRUEBA PREGUNTAS </pattern>
+		<template>
+			<think>
+			inicia preguntas 2
+			<set var="preguntas2">
+				<get name="preguntas"/>
+			</set>
+			inicia item
+			<set var="item">
+				<srai>ITERATE <get var="preguntas2"/></srai>
+			</set>
+			hace el iterate
+			<condition var="item">
+				<li value ="end"></li>
+				<li> <get var="item"/>
+					entra en comprueba pregunta donde item vale <get var="item"/>
+					<set var="tipo">
+						<srai> comprueba a pregunta <get var="item"/></srai>
+					</set>
+					sale de comprueba pregunta
+					
+					<set var="todosiguales">
+						<srai>  todos iguales en <get var="tipo"/> </srai>
+					</set>
+					la variable todos iguales vale <get var="todosiguales"/>
+
+					<condition var="todosiguales">
+					<li value="si">
+						entra en el borrado
+						
+						<srai> BORRA A PREGUNTA <get var="item"/></srai>
+					
+					</li>
+					<li></li>
+					</condition>
+				
+					actualiza la variable
+					<set var="preguntas2">
+						<srai>REMAIN <get var="preguntas2"/></srai>
+					</set>
+					<set var="item"> 
+						<srai>TOP <get var="preguntas2"/></srai>
+					</set>
+					<loop/>
+				</li>
+			</condition>
+		</think>
+		</template>
+	</category>
+
+	<category>
+		<pattern> comprueba a pregunta * </pattern>
+		<template> 
+			<think>
+			<set var="pregunta">
+				<star/>
+			</set>
+				
+				
+				<!--ANTES DEBE SABER SI LA PREGUNTA QUE VA HA HACER TIENE SENTIDO HACERLA O NO--> 
+				<!--PARA ELLO MIRA EN QUE CATEGORIA ESTÁ LA PREGUNTA ACTUAL ITERANDO SOBRE TODAS LAS CATEGORIAS.-->
+				
+				<set var="item">
+					<srai> ITERATE <get name="tipo_preguntas"/></srai>
+				</set>
+				
+				<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					<set var="posicion">
+						<!--Busca la pregunta en ese tipo de pregunta-->
+						<srai>BUSCA A PREGUNTA <get var="pregunta"/> en <get var="item"/></srai>
+					</set>
+						<condition var="posicion">
+							<li value="0">  entra en el 0 </li>
+							<li> 
+								<set var="tipo">
+									<get var="item"/>
+								</set>
+							</li>
+						</condition>
+							<set var="item"> 
+								<srai>NEXT</srai>
+							</set>
+					<loop/>
+				</li>
+				</condition>
+				la pregunta ha sido encontrada en <get var="tipo"/>
+			</think>
+			<get var="tipo"/>
+			</template>
+		</category>
+
+<!--Hacer una pregunta -->
+<category>
+	<pattern>HACER PREGUNTA DE VERDAD</pattern>
+	<template>
+				
+				<srai> COMPRUEBA PREGUNTAS </srai>
+				<set var="pregunta">
+				<srai> SELECTITEM 1 IN <get name="preguntas"/> </srai>
+				</set>
+				
+				<srai>LISTA PREGUNTAS</srai>
+				<!-- abrir el map con la clave de la pregunta para mostrarla en pantalla-->
+				<map><name>preguntas</name> <get var="pregunta"/> </map>
+				<think>
+				<!-- borrar la pregunta del conjunto de preguntas de su correspondiente tipo, ya que se escogerán de ahi.-->
+				Antes de borrar la pregunta
+				<set name="preguntas">
+					<srai> REMOVEITEM 1 IN <get name="preguntas"/></srai>
+				</set>
+				antes del listado
+				<srai>LISTA PREGUNTAS</srai>
+				<!--cambiar el topic del robot para que la respuesta que demos a continuación descarte personajes y preguntas-->
+				sale del listado
+				<set><name>topic</name> <get var="pregunta"/></set>
+				</think>
+	</template>
+</category>
+
+
+
+<!-- Buscar a una persona -->
+<category>
+	<pattern> busca a * </pattern>
+	<template>
+		<star/>
+		<map name="ojos"><star/></map>
+	</template>
+</category>
+
+
+<!-- Listar a personas -->
+
+<category>
+	<pattern> LISTA PERSONAS </pattern>
+	<template>
+		<think>
+				<set var="item">
+					<srai> ITERATE <get name="personas"/></srai>
+				</set>
+			</think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+	</template>
+</category>
+
+<!--Lista preguntas -->
+
+<category>
+<pattern> LISTA PREGUNTAS </pattern>
+<template>en el listado
+	<get name="preguntas"/>
+</template>
+</category>
+
+<!-- Borrar personas por nombre -->
+<category>
+	<pattern> BORRA A * </pattern>
+		<!--Encontrar al personaje-->
+	<template>
+	entra en el borrado
+		<think>
+		<set var="pos">
+			<srai>FINDITEM <star/> IN <get name="personas"/></srai>
+		</set>
+		<!--Borra al personaje-->
+		<set name="personas">
+			<srai> REMOVEITEM <get var="pos"/> IN <get name="personas"/> </srai>
+		</set>	
+		</think>		
+	</template>
+</category>
+
+<category>
+	<pattern>BUSCA A PREGUNTA *  en *</pattern>
+	<template>
+		<think>
+		<set var="dondebuscar">
+			<star index="2"/>
+		</set>
+		</think>
+		<srai>FINDITEM <star/> IN <get><name><get var="dondebuscar"/></name></get>></srai>
+		 </template>
+</category>
+
+<category>
+	<pattern> LISTA PREGUNTAS DE ojos </pattern>
+	<template>
+		<think>
+				<set var="item">
+					<srai> ITERATE <get name="preguntas_ojos"/></srai>
+				</set>
+			</think>
+			<condition var="item">
+				<li value="end"></li>
+				<li> <get var="item"/>
+					dentro del bucle
+					<think>
+						<set var="item">
+							<srai>NEXT</srai>
+						</set>
+					</think>
+					<loop/>
+				</li>
+			</condition>
+	</template>
+</category>
+<category>
+	<pattern> Borra la primera pregunta </pattern>
+	<template>
+		<set name="preguntas">
+			<srai> REMOVEITEM 1 IN <get name="preguntas"/></srai>
+		</set>
+		<srai> HACER PREGUNTA DE VERDAD </srai>
+	</template>
+</category>
+
+<!--OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO TOPICS DEL PROGRAMA OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+-->
+
+<topic name="p2">
+	<category>
+		<pattern> si </pattern>
+		<template> Los tiene claros entonces...
+			<srai> BORRA OJOS OSCUROS </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+
+	<category>
+		<pattern> no </pattern>
+		<template> Los tiene oscuros entonces...
+			<srai>BORRA OJOS CLAROS </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p3">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PIEL OSCURA </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PIEL CLARA </srai>
+			<srai> BORRA A PREGUNTA p4</srai>
+			<srai> BORRA A PREGUNTA p6</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p1">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> BORRA PELO CANOSO</srai>
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO MORENO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p4">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> BORRA PELO CANOSO</srai>
+			<srai> BORRA PELO MORENO </srai>
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p5">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> BORRA PELO CANOSO</srai>
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> BORRA PELO MORENO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p6">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO MORENO </srai>
+			<srai> BORRA PELO CANOSO</srai>
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p7">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> BORRA PELO MORENO</srai>
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO CANOSO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p8">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> BORRA PELO RUBIO </srai>
+			<srai> BORRA PELO CANOSO</srai>
+			<srai> BORRA PELO PELIRROJO </srai>
+			<srai> BORRA PELO CALVO </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA PELO MARRON </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p9">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA GAFAS NO</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA GAFAS SI</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p10">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA NO BIGOTE </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA SI BIGOTE </srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic><topic name="p11">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA BARBA NO</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA BARBA SI</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+<topic name="p12">
+	<category>
+		<pattern> si </pattern>
+		<template> 
+			<srai> BORRA MUJER</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+		<category>
+		<pattern> no </pattern>
+		<template> 
+			<srai> BORRA HOMBRE</srai>
+			<!--En caso de ser una mujer habra que borrar algunas preguntas-->
+			entra en el borrado
+			<srai> BORRA A PREGUNTA p5</srai>
+			<srai> BORRA A PREGUNTA p11</srai>
+			<srai> BORRA A PREGUNTA p10</srai>
+			<srai> CUANTOS HAY</srai>
+		</template>
+	</category>
+</topic>
+
+</aiml>
