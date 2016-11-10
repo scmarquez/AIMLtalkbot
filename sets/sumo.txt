@@ -1,0 +1,6 @@
+sumo
+tengo
+obtengo
+he sumado
+he obtenido
+he tenido

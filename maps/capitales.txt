@@ -1,0 +1,7 @@
+francia:paris
+italia:roma
+belgica:bruselas
+noruega:oslo
+dinamarca:copenhague
+bulgaria:sofia
+alemania:berlin

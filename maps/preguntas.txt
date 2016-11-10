@@ -1,0 +1,12 @@
+p1:tiene el pelo moreno 
+p2:tiene los ojos claros
+p3: tiene la piel clara
+p4: es pelirrojo
+p5: es calvo
+p6: es rubio
+p7: es canoso
+p8: tiene el pelo marron
+p9: tiene gafas
+p10: tiene bigote
+p11: tiene barba
+p12: es hombre
